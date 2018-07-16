@@ -1,0 +1,11 @@
+{
+  "name": "server",
+  "script": "index.js",
+  "watch": true,
+  "autorestart": true,
+  "exec_interpreter": "/home/dodo/projects/lettershack/server/node_modules/.bin/babel-node",
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": 8000
+  }
+}
