@@ -9,7 +9,7 @@ import { generateToken, sendToken } from '../../config/token.utils'
 * @group authentication - Operations on user authentication
 * @param {string} access_token.query.required - username or email
 * @returns {string} 200 - User creation Object
-* @returns {object} 401 - Bad Request or User alreay exists
+* @returns {string} 401 - Bad Request or User alreay exists
 * @returns {Error} 400 - Unexpected error due to server
 */
 router.route('/auth/facebook')
