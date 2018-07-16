@@ -12,7 +12,6 @@ import UserModel from '../../models/user.model'
 * @param {string} password.query.required - user's password.
 * @returns {string} 200 - User creation Object
 * @returns {string} 401 - Bad Request or User alreay exists
-* @returns {Error} 400 - Unexpected error due to server
 */
 router.route("/signup")
   .post((req, res, next) => {
@@ -40,7 +39,6 @@ router.route("/signup")
 * @param {string} password.query.required - user's password.
 * @returns {string} 200 - User creation Object token
 * @returns {string} 401 - Bad Request or User alreay exists
-* @returns {Error} 400 - Unexpected error due to server
 */
 router.route("/login")
   .post((req, res, next) => {

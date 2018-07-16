@@ -10,7 +10,6 @@ import { generateToken, sendToken } from '../../config/token.utils'
 * @param {string} access_token.query.required - username or email
 * @returns {string} 200 - User creation Object
 * @returns {string} 401 - Bad Request or User alreay exists
-* @returns {Error} 400 - Unexpected error due to server
 */
 router.route('/auth/google')
   .post(passport.authenticate('google-token', { session: false }), (req, res, next) => {

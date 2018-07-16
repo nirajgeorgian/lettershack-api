@@ -8,9 +8,8 @@ import { generateToken, sendToken } from '../../config/token.utils'
 * @route POST /auth/facebook
 * @group authentication - Operations on user authentication
 * @param {string} access_token.query.required - username or email
-* @returns {string} 200 - User creation Object
+* @returns {string} User creation Object
 * @returns {string} 401 - Bad Request or User alreay exists
-* @returns {Error} 400 - Unexpected error due to server
 */
 router.route('/auth/facebook')
   .post(passport.authenticate('facebook-token', { session: false }), async (req, res, next) => {
