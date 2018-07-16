@@ -7,12 +7,19 @@ const router = express.Router()
  * @group foo - Operations about user
  * @returns {object} 200 - A default message
  * @returns {Error}  default - Unexpected error
+ * @security JWT
  */
 router.route('/')
 	.get(async (req, res) => {
-    await res.send(200, {
-      "message": "Dodo lives here"
-    })
+		if(!res.id) {
+			await res.status(401).send({
+				"message": "Unauthorized access"
+			})
+		} else {
+			await res.status(200).send({
+	      "message": "Dodo lives here"
+	    })
+		}
   })
 
 export default router

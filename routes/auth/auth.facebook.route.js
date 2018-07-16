@@ -15,7 +15,7 @@ import { generateToken, sendToken } from '../../config/token.utils'
 router.route('/auth/facebook')
   .post(passport.authenticate('facebook-token', { session: false }), async (req, res, next) => {
     if(!req.user) {
-      return await res.send(401, { message: "User not authenticated"})
+      return await res.status(401).send({ message: "User not authenticated"})
     }
     req.auth = {
       id: req.user.id

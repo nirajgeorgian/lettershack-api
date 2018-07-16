@@ -7,11 +7,15 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 const app = express()
 const expressSwagger = require('express-swagger-generator')(app)
+import { authMiddleWare } from './config/authMiddleware'
+
+env(app)  //Setting up env as early as possible
+logs(app)  // Setting Up Logger to log to files
 
 let options = {
 	swaggerDefinition: {
 		info: {
-			description: 'This is a sample server',
+			description: 'REST api for lettershack',
 			title: 'lettershack',
 			version: '0.0.1',
 		},
@@ -27,7 +31,7 @@ let options = {
 				type: 'apiKey',
 				in: 'header',
 				name: 'x-auth-token',
-				description: '',
+				description: 'login and pass the auth token to access protected routes',
 			}
 		}
 	},
@@ -54,9 +58,6 @@ let corsOption = {
 	exposedHeaders: ['x-auth-token']
 }
 
-env(app)  //Setting up env as early as possible
-logs(app)  // Setting Up Logger to log to files
-
 const server = http.Server(app)
 // const io = socket(server)
 const port = process.env.PORT || 8000
@@ -74,6 +75,7 @@ app.use(ignReq.ignoreRobots)  // Fix for /robots.txt for api's
 app.use(cors(corsOption))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(authMiddleWare)
 
 // Set up routes
 app.use('', googleAuthRoute)

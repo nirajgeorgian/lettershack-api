@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken'
+import constants from './constants'
 
 const createToken = auth => {
   return jwt.sign({
     id: auth.id
-  }, 'my-super-secret',
+  }, constants.SECRET_KEY,
   {
     expiresIn: 60 * 120
   })
@@ -15,7 +16,6 @@ export const generateToken = (req, res, next) => {
 }
 
 export const sendToken = (req, res, next) => {
-  console.log(req.token);
   res.setHeader('x-auth-token', req.token)
   return res.status(200).send(req.user)
 }

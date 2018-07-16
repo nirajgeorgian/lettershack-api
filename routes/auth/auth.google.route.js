@@ -15,7 +15,7 @@ import { generateToken, sendToken } from '../../config/token.utils'
 router.route('/auth/google')
   .post(passport.authenticate('google-token', { session: false }), (req, res, next) => {
     if(!req.user) {
-      return res.send(401, { message: "User not authenticated"})
+      return res.status(401).send({ message: "User not authenticated"})
     }
     req.auth = {
       id: req.user.id
