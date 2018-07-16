@@ -8,7 +8,7 @@ import { generateToken, sendToken } from '../../config/token.utils'
 * @route POST /auth/google
 * @group authentication - Operations on user authentication
 * @param {string} access_token.query.required - username or email
-* @returns {object} 200 - User creation Object
+* @returns {string} 200 - User creation Object
 * @returns {object} 401 - Bad Request or User alreay exists
 * @returns {Error} 400 - Unexpected error due to server
 */
