@@ -5,7 +5,7 @@ const router = express.Router()
  * This function comment is parsed by doctrine
  * @route GET /
  * @group foo - Operations about user
- * @returns {object} 200 - A default message
+ * @returns {string} 200 - A default message
  * @returns {Error}  default - Unexpected error
  * @security JWT
  */

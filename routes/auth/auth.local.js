@@ -38,7 +38,7 @@ router.route("/signup")
 * @group authentication - Operations on user authentication
 * @param {string} email.query.required - username or email
 * @param {string} password.query.required - user's password.
-* @returns {object} 200 - User creation Object
+* @returns {string} 200 - User creation Object token
 * @returns {object} 401 - Bad Request or User alreay exists
 * @returns {Error} 400 - Unexpected error due to server
 */
