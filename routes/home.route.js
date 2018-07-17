@@ -12,13 +12,13 @@ router.route('/')
 	.get(async (req, res) => {
 		if(!res.id) {
 			await res.status(401).send({
-				"message": "Unauthorized access"
+				'message': 'Unauthorized access'
 			})
 		} else {
 			await res.status(200).send({
-	      "message": "Dodo lives here"
-	    })
+				message: 'Dodo lives here'
+			})
 		}
-  })
+	})
 
 export default router

@@ -12,14 +12,14 @@ import { generateToken, sendToken } from '../../config/token.utils'
 * @returns {string} 401 - Bad Request or User alreay exists
 */
 router.route('/auth/facebook')
-  .post(passport.authenticate('facebook-token', { session: false }), async (req, res, next) => {
-    if(!req.user) {
-      return await res.status(401).send({ message: "User not authenticated"})
-    }
-    req.auth = {
-      id: req.user.id
-    }
-    next()
-  }, generateToken, sendToken)
+	.post(passport.authenticate('facebook-token', { session: false }), async (req, res, next) => {
+		if(!req.user) {
+			return await res.status(401).send({ message: 'User not authenticated'})
+		}
+		req.auth = {
+			id: req.user.id
+		}
+		next()
+	}, generateToken, sendToken)
 
 export default router

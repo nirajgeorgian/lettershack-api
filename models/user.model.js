@@ -22,7 +22,8 @@ const UserSchema = new Schema({
     select: false
   },
   token: String,
-  authType: String
+  authType: String,
+	books: [ { type: Schema.Types.ObjectId, ref: 'BookModel'}]
 })
 
 UserSchema.methods.isValidPassword = async function(password) {
@@ -120,9 +121,6 @@ UserSchema.statics.createGoogleUser = async function(accessToken, refreshToken, 
     const savedUser = await updateUser(user, profile, accessToken, "googleUserId")
     return await cb(null, savedUser)
   }
-  // console.log(accessToken)
-  // console.log(refreshToken);
-  // console.log(profile);
 }
 
 

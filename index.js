@@ -7,7 +7,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 const app = express()
 const expressSwagger = require('express-swagger-generator')(app)
-import { authMiddleWare } from './config/authMiddleware'
+import authMiddleWare from './config/authMiddleware'
 
 env(app)  //Setting up env as early as possible
 logs(app)  // Setting Up Logger to log to files
@@ -75,12 +75,12 @@ app.use(ignReq.ignoreRobots)  // Fix for /robots.txt for api's
 app.use(cors(corsOption))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(authMiddleWare)
+authMiddleWare(app)
 
 // Set up routes
 app.use('', googleAuthRoute)
 app.use('', facebookAuthRoute)
-app.use('', homeRoute)
+app.use('/api', homeRoute)
 app.use('', localAuthRoute)
 
 /* eslint-disable */
