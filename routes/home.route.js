@@ -11,12 +11,14 @@ const router = express.Router()
 router.route('/')
 	.get(async (req, res) => {
 		if(!res.id) {
-			await res.status(401).send({
-				'message': 'Unauthorized access'
+			await res.send({
+				'message': 'Unauthorized access',
+				status: false
 			})
 		} else {
-			await res.status(200).send({
-				message: 'Dodo lives here'
+			await res.send({
+				message: 'Dodo lives here',
+				status: true
 			})
 		}
 	})

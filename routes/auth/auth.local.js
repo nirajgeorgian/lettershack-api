@@ -17,17 +17,20 @@ router.route("/signup")
   .post((req, res, next) => {
     passport.authenticate('signup', { session: false }, async (err, user, info) => {
       if(err) {
-        return await res.status(401).send({
-          message: "Bad Request"
+        return await res.send({
+          message: "Bad Request",
+					status: false
         })
       }
       if(!user) {
-        return await res.status(401).send({
-          message: "User already exists"
+        return await res.send({
+          message: "User already exists",
+					status: false
         })
       }
       res.status(200).send({
-        user: user
+        user: user,
+				status: true
       })
   })(req, res, next)
 })
@@ -44,19 +47,22 @@ router.route("/login")
   .post((req, res, next) => {
     passport.authenticate("login", { session: false }, async (err, user) => {
       if(err) {
-        return await res.status(400).send({
+        return await res.send({
           message: 'Something is not right, Try google or facebook login',
+					status: false
 
         });
       }
       if(Object.keys(user).length === 0) {
-        return await res.status(401).send({
-          message: "Password donot match"
+        return await res.send({
+          message: "Password donot match",
+					status: false
         })
       }
       if(!user) {
-        return await res.status(400).json({
-          message: 'User does not exists'
+        return await res.json({
+          message: 'User does not exists',
+					status: false
         });
       }
       req.login(user, { session: false }, async (error) => {
@@ -68,7 +74,10 @@ router.route("/login")
         const token = jwt.sign({ user : body }, constants.SECRET_KEY, { expiresIn: 60 * 120 });
         //Send back the token to the user
         res.setHeader('x-auth-token', token)
-        return await res.json({ token });
+        return await res.json({
+					token,
+					status: true
+				})
         // next()
       })
   })(req, res, next)
