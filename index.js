@@ -7,7 +7,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 const app = express()
 const expressSwagger = require('express-swagger-generator')(app)
-import authMiddleWare from './config/authMiddleware'
+import './config/authMiddleware'
 
 env(app)  //Setting up env as early as possible
 logs(app)  // Setting Up Logger to log to files
@@ -45,10 +45,7 @@ import env from './env/env'
 import logs from './logs/logs'
 import ignReq from './utils/ignoreRequest'
 import AuthConfig from './config/passport.config'
-import homeRoute from './routes/home.route'
-import googleAuthRoute from './routes/auth/auth.google.route'
-import facebookAuthRoute from './routes/auth/auth.facebook.route'
-import localAuthRoute from './routes/auth/auth.local'
+import appRoutes from './routes/index'
 
 // CORS options
 let corsOption = {
@@ -75,13 +72,7 @@ app.use(ignReq.ignoreRobots)  // Fix for /robots.txt for api's
 app.use(cors(corsOption))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-authMiddleWare(app)
-
-// Set up routes
-app.use('', googleAuthRoute)
-app.use('', facebookAuthRoute)
-app.use('/api', homeRoute)
-app.use('', localAuthRoute)
+appRoutes(app)
 
 /* eslint-disable */
 db.once('open', () => {

@@ -5,8 +5,10 @@ const Schema = mongoose.Schema
 const UserSchema = new Schema({
   name: { type: String, lowercase: true },
   email: { type: String, lowercase: true, trim: true },
-  username: { type: String, lowercase: true, trim: true },
+  username: { type: String, lowercase: true, trim: true, unique: true},
   password: String,
+	bio: String,
+	image: String,
   googleUserId: {
     type: {
       id: String,
@@ -23,8 +25,54 @@ const UserSchema = new Schema({
   },
   token: String,
   authType: String,
-	books: [ { type: Schema.Types.ObjectId, ref: 'BookModel'}]
-})
+	books: [ { type: Schema.Types.ObjectId, ref: 'BookModel'}],
+	favourites: [{ type: Schema.Types.ObjectId, ref: 'NoteModel'}],
+	following: [{ type: Schema.Types.ObjectId, ref: 'UserModel'}],
+	followers: [{ type: Schema.Types.ObjectId, ref: 'UserModel'}],
+	isAgent: { type: Boolean, default: false }
+}, { timestamps: true })
+
+UserSchema.methods.favourate = async function(id) {
+	if(!(this.favourites.includes(id))) {
+		this.favourites.push(id)
+	}
+	return await this.save()
+}
+
+UserSchema.methods.unfavourate = async function(id) {
+	if((this.favourites.includes(id))) {
+		this.favourites.reemove(id)
+	}
+	return await this.save()
+}
+
+UserSchema.methods.addFollower = async function(id) {
+	if(!(this.following.includes(id))) {
+		this.followers.push(id)
+	}
+	return await this.save()
+}
+
+UserSchema.methods.removeFollower = async function(id) {
+	if((this.followers.includes(id))) {
+		this.followers.remove(id)
+	}
+	return await this.save()
+}
+
+UserSchema.methods.follow = async function(id) {
+	if(!(this.following.includes(id))) {
+		this.following.push(id)
+	}
+	return await this.save()
+}
+
+UserSchema.methods.unfollow = async function(id) {
+	if((this.following.includes(id))) {
+		this.following.remove(id)
+	}
+	return await this.save()
+}
 
 UserSchema.methods.isValidPassword = async function(password) {
   const user = this;
@@ -59,7 +107,7 @@ async function createNewUser(profile, accessToken, id) {
 }
 
 async function updateUser(user, profile, accessToken, id) {
-  // no user exist's with this id for google, facebook or simple
+	// no user exist's with this id for google, facebook or simple
   user.name = profile.displayName
   user[id] = {
     id: profile.id,
@@ -121,6 +169,11 @@ UserSchema.statics.createGoogleUser = async function(accessToken, refreshToken, 
     const savedUser = await updateUser(user, profile, accessToken, "googleUserId")
     return await cb(null, savedUser)
   }
+}
+
+UserSchema.statics.createUsername = async function(username) {
+	// we know the token id
+
 }
 
 

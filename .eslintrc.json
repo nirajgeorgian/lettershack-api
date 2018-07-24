@@ -9,10 +9,6 @@
         "sourceType": "module"
     },
     "rules": {
-        "indent": [
-            "error",
-            "tab"
-        ],
         "linebreak-style": [
             "error",
             "unix"
@@ -29,6 +25,9 @@
         "eqeqeq": 1,
         "no-shadow": 1,
         "arrow-spacing": "error",
-        "no-var": "error"
+        "no-var": "error",
+        "globals": {
+          "authMiddleWare": true
+        }
     }
 }

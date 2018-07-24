@@ -9,7 +9,7 @@ const router = express.Router()
  * @security JWT
  */
 router.route('/')
-	.get(async (req, res) => {
+	.get(authMiddleWare, async (req, res) => {
 		if(!res.id) {
 			await res.send({
 				'message': 'Unauthorized access',
@@ -18,6 +18,7 @@ router.route('/')
 		} else {
 			await res.send({
 				message: 'Dodo lives here',
+				id: res.id,
 				status: true
 			})
 		}
