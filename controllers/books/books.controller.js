@@ -5,6 +5,12 @@ import { error } from '../../config/response'
 
 export const create = async (req, res) => {
 	const data = req.body
+	if(!data.title) {
+		return error(res, 'Please give a title')
+	}
+	if(!data.description) {
+		return error(res, 'Please give a description')
+	}
 	// validate the above data with the url
 	const book = new BookModel(data)
 	const profile = await UserModel.findById(res.id)
@@ -26,7 +32,7 @@ export const create = async (req, res) => {
 }
 
 export const get = async (req, res) => {
-	const books = await BookModel.find({})
+	const books = await BookModel.find({}).populate('chapters')
 	if(!books) {
 		error(res, 'No books are created')
 	} else {
@@ -58,6 +64,7 @@ export const getOneBook = async (req, res) => {
 
 export const checkTitle = async (req, res) => {
 	const title = req.params.title
+	console.log(title);
 	const confirmTitle = await BookModel.getTitle(title)
 	if(confirmTitle) {
 		// true means he can use given book title or else change the title
@@ -67,5 +74,29 @@ export const checkTitle = async (req, res) => {
 		})
 	} else {
 		error(res, 'Sorry, Book title already exists')
+	}
+}
+
+export const updateBook = async (req, res) => {
+	const book = await BookModel.findById(req.params.id)
+	if(!book) {
+		return error(res, 'No book find with this title')
+	} else {
+		const data = req.body
+		book.description = data.description ? data.description : book.description
+		book.coverImage = data.coverImage ? data.coverImage : book.coverImage
+		book.tagList = data.tagList ?  book.addTagList(data.tagList) : data.tagList
+		book.genre = data.genre ? data.genre : book.genre
+		book.favouriteCount = data.favouriteCount ? data.favouriteCount : book.favouriteCount
+		book.ratings = data.rating ? book.addRating(data.rating) : book.rating
+		book.isbn = data.isbn ? data.isbn : book.isbn
+		book.chapters = data.noteId ? book.addChapter(data.noteId) : book.chapters
+		book.price = data.price ? data.price : book.price
+		book.save()
+			.then(x => res.send({
+				status: true,
+				book: x
+			}))
+			.catch(err => (error(res, err)))
 	}
 }

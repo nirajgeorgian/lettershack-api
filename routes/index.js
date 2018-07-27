@@ -1,18 +1,14 @@
 import homeRoute from './home.route'
-import googleAuthRoute from './auth/auth.google.route'
-import facebookAuthRoute from './auth/auth.facebook.route'
-import localAuthRoute from './auth/auth.local'
-import profileAuthRoute from './profile.auth'
+import usersRoute from './users/users.route'
 import bookRoute from './books/books.routes'
+import notesRoute from './notes/notes.route'
 
 const appRoutes = app => {
 	// Set up routes
-	app.use('', googleAuthRoute)
-	app.use('', facebookAuthRoute)
+	app.use('', usersRoute)
 	app.use('', homeRoute)
-	app.use('', localAuthRoute)
-	app.use('', profileAuthRoute)
 	app.use('', bookRoute)
+	app.use('', notesRoute)
 }
 
 export default appRoutes

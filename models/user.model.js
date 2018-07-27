@@ -24,7 +24,7 @@ const UserSchema = new Schema({
     select: false
   },
   token: String,
-  authType: String,
+  authType: { type: String, default: 'local'},
 	books: [ { type: Schema.Types.ObjectId, ref: 'BookModel'}],
 	favourites: [{ type: Schema.Types.ObjectId, ref: 'NoteModel'}],
 	following: [{ type: Schema.Types.ObjectId, ref: 'UserModel'}],
@@ -33,42 +33,42 @@ const UserSchema = new Schema({
 }, { timestamps: true })
 
 UserSchema.methods.favourate = async function(id) {
-	if(!(this.favourites.includes(id))) {
+	if((this.favourites.indexOf(id) === -1)) {
 		this.favourites.push(id)
 	}
 	return await this.save()
 }
 
 UserSchema.methods.unfavourate = async function(id) {
-	if((this.favourites.includes(id))) {
-		this.favourites.reemove(id)
+	if((this.favourites.indexOf(id) !== -1)) {
+		this.favourites.remove(id)
 	}
 	return await this.save()
 }
 
 UserSchema.methods.addFollower = async function(id) {
-	if(!(this.following.includes(id))) {
+	if((this.following.indexOf(id) === -1)) {
 		this.followers.push(id)
 	}
 	return await this.save()
 }
 
 UserSchema.methods.removeFollower = async function(id) {
-	if((this.followers.includes(id))) {
+	if((this.followers.indexOf(id) !== -1)) {
 		this.followers.remove(id)
 	}
 	return await this.save()
 }
 
-UserSchema.methods.follow = async function(id) {
-	if(!(this.following.includes(id))) {
+UserSchema.methods.addFollowing = async function(id) {
+	if((this.following.indexOf(id) === -1)) {
 		this.following.push(id)
 	}
 	return await this.save()
 }
 
-UserSchema.methods.unfollow = async function(id) {
-	if((this.following.includes(id))) {
+UserSchema.methods.addUnfollowing = async function(id) {
+	if((this.following.indexOf(id) !== -1)) {
 		this.following.remove(id)
 	}
 	return await this.save()
@@ -126,7 +126,7 @@ UserSchema.statics.createFbUser = async function(accessToken, refreshToken, prof
     const savedUser = await createNewUser.call(that, profile, accessToken, 'facebookUserId')
     return await cb(null, savedUser)
   } else {
-    const savedUser = await updateUser(user, profile, accessToken, "facebookUserId")
+    const savedUser = await updateUser(user, profile, accessToken, 'facebookUserId')
     return await cb(null, savedUser)
   }
 }
@@ -136,7 +136,7 @@ UserSchema.statics.loginLocalUser = async function(email, password, cb) {
   let user = await findEmail.call(this, email)
   if(user === null) {
     // No user exist for this user
-    return cb(null, false, { message: "User not found" })
+    return cb(null, false, { message: 'User not found' })
   } else  {
     // User already exists
     // Checl for google or facebook user existance
@@ -144,13 +144,13 @@ UserSchema.statics.loginLocalUser = async function(email, password, cb) {
       const validate = await user.isValidPassword(password) // Validate password
 
       if(validate === false) {
-        return cb(null, {}, { message: "Wrong Password" })
+        return cb(null, {}, { message: 'Wrong Password' })
       } else {
         return await cb(null, user)
       }
     } else {
-      const error = new Error("Try something else")
-      return cb(error, false, { message: "Wrong Password" })
+      const error = new Error('Try something else')
+      return cb(error, false, { message: 'Wrong Password' })
     }
   }
 }
@@ -158,23 +158,14 @@ UserSchema.statics.loginLocalUser = async function(email, password, cb) {
 UserSchema.statics.createGoogleUser = async function(accessToken, refreshToken, profile, cb) {
   let that = this
   let user = await findEmail.call(this, profile.emails[0].value)
-  console.log(user);
   if(user === null) {
-    console.log("if ===");
     // no user exist's with this id for google, facebook or simple
     const savedUser = await createNewUser.call(that, profile, accessToken, 'googleUserId')
     return await cb(null, savedUser)
   } else {
-    console.log("else ===");
-    const savedUser = await updateUser(user, profile, accessToken, "googleUserId")
+    const savedUser = await updateUser(user, profile, accessToken, 'googleUserId')
     return await cb(null, savedUser)
   }
 }
-
-UserSchema.statics.createUsername = async function(username) {
-	// we know the token id
-
-}
-
 
 export default mongoose.model('UserModel', UserSchema)

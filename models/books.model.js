@@ -11,9 +11,9 @@ const BookSchema = new Schema({
 	genre: { type: String },
 	favouriteCount: { type: Number, default: 0},
 	views: { type: Number, default: 0},
-	rating: { type: Number, default: 0},
+	ratings: [{ type: Number, default: 0}],
 	isbn: { type: String, lowercase: true },
-	chapters: [ { type: Schema.Types.ObjectId, ref: 'NoteModel' }],
+	chapters: [{ type: Schema.Types.ObjectId, ref: 'NoteModel' }],
 	noOfPages: Number,
 	price: { type: String },
 	published: { type: Boolean },
@@ -49,6 +49,28 @@ BookSchema.statics.getTitle = async function(title) {
 	}
 }
 
+BookSchema.methods.addChapter = function(id) {
+	// validate id
+	// TODO: Add validation for id field weather this filed exists or not
+	this.chapters.push(id)
+	return this.chapters
+}
 
+BookSchema.methods.addRating = function(rating) {
+	this.ratings.push(rating)
+	return this.ratings
+}
+
+BookSchema.methods.addTagList = function(list) {
+	if(Array.isArray(list)) {
+		list.forEach((x) => {
+			if(!this.tagList.includes(x)) {
+				this.tagList.push(x)
+			}
+		})
+		return this.tagList
+	}
+	return this.tagList
+}
 
 export default mongoose.model('BookModel', BookSchema)

@@ -1,12 +1,13 @@
 import express from 'express'
 const router = express.Router()
-import NoteModel from '../../models/note.model'
-import UserModel from '../../models/user.model'
+import { create, findAll, findOne, updateNote } from '../../controllers/notes/notes.controller'
 
 router.route('/notes')
-	.get(async (req, res) => {
-		return "dodo"
-	})
-	.post(async (req, res) => { // Create a note and check all the possible cases
-		
-	})
+	.get(authMiddleWare, findAll)
+	.post(authMiddleWare, create)
+
+router.route('/notes/:id')
+	.get(authMiddleWare, findOne)
+	.put(authMiddleWare, updateNote)
+
+export default router
