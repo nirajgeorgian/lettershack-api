@@ -21,6 +21,15 @@ export const create = async (req, res) => {
 		// already book is created with this title
 		error(res, 'Sorry, Book title already exists')
 	} else {
+		book.description = data.description ? data.description : book.description
+		book.coverImage = data.coverImage ? data.coverImage : book.coverImage
+		book.tagList = data.tagList ?  book.addTagList(data.tagList) : data.tagList
+		book.genre = data.genre ? data.genre : book.genre
+		book.favouriteCount = data.favouriteCount ? data.favouriteCount : book.favouriteCount
+		book.ratings = data.rating ? book.addRating(data.rating) : book.rating
+		book.isbn = data.isbn ? data.isbn : book.isbn
+		book.chapters = data.noteId ? book.addChapter(data.noteId) : book.chapters
+		book.price = data.price ? data.price : book.price
 		book.save()
 		.then(currBook => {
 			return res.send({
