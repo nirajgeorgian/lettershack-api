@@ -132,12 +132,14 @@ UserSchema.statics.createFbUser = async function(accessToken, refreshToken, prof
 }
 
 UserSchema.statics.loginLocalUser = async function(email, password, cb) {
-  let that = this
-	if(email.split(" ").includes("@")) {
+	// without email and password it will not hit this endpoint
+	if(email.split('').includes('@')) {
+		// let that = this
 		let user = await findEmail.call(this, email)
 		if(user === null) {
 			// No user exist for this user
-			return cb(null, false, { message: 'User not found' })
+			const error = new Error('No user exist with this email address')
+			return cb(error, false, { message: 'User not found' })
 		} else  {
 			// User already exists
 			// Checl for google or facebook user existance
@@ -145,7 +147,8 @@ UserSchema.statics.loginLocalUser = async function(email, password, cb) {
 				const validate = await user.isValidPassword(password) // Validate password
 
 				if(validate === false) {
-					return cb(null, {}, { message: 'Wrong Password' })
+					const error = new Error('Wrong Password')
+					return cb(error, {}, { message: 'Wrong Password' })
 				} else {
 					return await cb(null, user)
 				}
@@ -155,14 +158,14 @@ UserSchema.statics.loginLocalUser = async function(email, password, cb) {
 			}
 		}
 	} else {
-		return cb(null, {}, { message: 'Please provide email' })
+		const error = new Error('Use a valid email address')
+		return cb(error, {}, { message: 'Please provide email' })
 	}
 }
 
 UserSchema.statics.createGoogleUser = async function(accessToken, refreshToken, profile, cb) {
   let that = this
   let user = await findEmail.call(this, profile.emails[0].value)
-	console.log(user);
   if(user === null) {
     // no user exist's with this id for google, facebook or simple
     const savedUser = await createNewUser.call(that, profile, accessToken, 'googleUserId')

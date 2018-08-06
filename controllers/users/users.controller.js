@@ -22,14 +22,16 @@ export const signup = (req, res, next) => {
 export const login = (req, res, next) => {
 	passport.authenticate('login', { session: false }, async (err, user) => {
 		if(err) {
-			return await error(res, 'Something is not right, Try google or facebook login')
+			return await error(res, err.message)
+		}
+		/*
+		if(!user) {
+			return await error(res, 'User does not exists')
 		}
 		if(Object.keys(user).length === 0) {
 			return await error(res, 'Password donot match')
 		}
-		if(!user) {
-			return await error(res, 'User does not exists')
-		}
+		*/
 		req.login(user, { session: false }, async (error) => {
 			if( error ) return next(error)
 			//We don't want to store the sensitive information such as the
