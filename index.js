@@ -6,39 +6,10 @@ import passport from 'passport'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 const app = express()
-const expressSwagger = require('express-swagger-generator')(app)
 import './config/authMiddleware'
 
 env(app)  //Setting up env as early as possible
 logs(app)  // Setting Up Logger to log to files
-
-let options = {
-	swaggerDefinition: {
-		info: {
-			description: 'REST api for lettershack',
-			title: 'lettershack',
-			version: '0.0.1',
-		},
-		host: 'localhost:8080',
-		basePath: '/',
-		produces: [
-			'application/json',
-			'application/xml'
-		],
-		schemes: ['http', 'https'],
-		securityDefinitions: {
-			JWT: {
-				type: 'apiKey',
-				in: 'header',
-				name: 'x-auth-token',
-				description: 'login and pass the auth token to access protected routes',
-			}
-		}
-	},
-	basedir: __dirname, //app absolute path
-	files: ['./routes/**/*.js'] //Path to the API handle folder
-}
-expressSwagger(options)
 
 // Custom self made module
 import env from './env/env'
@@ -76,7 +47,7 @@ appRoutes(app)
 
 /* eslint-disable */
 db.once('open', () => {
-  console.log("database successfully connected")
+	console.info(`Connected to ${process.env.MONGO_HOST}/lettershack`);
   server.listen(port, err => {
     if(err) {
       console.log("Error occured " + err.message());

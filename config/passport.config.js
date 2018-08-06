@@ -44,7 +44,8 @@ const AuthConfig = passport => {
 		try {
 			const user = await UserModel.findOne({ email })
 			if(user) {
-				return done(null, false, { message: 'User already exists' })
+				const error = new Error('User already exists')
+				return done(error, null)
 			} else {
 				const newUser = await new UserModel({ email, password })
 				newUser.password = await bcrypt.hash(password, 10)

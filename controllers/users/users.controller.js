@@ -7,10 +7,7 @@ import constants from '../../config/constants'
 export const signup = (req, res, next) => {
 	passport.authenticate('signup', { session: false }, async (err, user) => {
 		if(err) {
-			return await error(res, 'Bad Request')
-		}
-		if(!user) {
-			return await error(res, 'User already exists')
+			return await error(res, err.message)
 		}
 		res.status(200).send({
 			user: user,
