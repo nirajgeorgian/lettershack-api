@@ -158,6 +158,7 @@ UserSchema.statics.loginLocalUser = async function(email, password, cb) {
 UserSchema.statics.createGoogleUser = async function(accessToken, refreshToken, profile, cb) {
   let that = this
   let user = await findEmail.call(this, profile.emails[0].value)
+	console.log(user);
   if(user === null) {
     // no user exist's with this id for google, facebook or simple
     const savedUser = await createNewUser.call(that, profile, accessToken, 'googleUserId')

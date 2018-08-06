@@ -47,7 +47,7 @@ const authMiddleWare = async (req, res, next) => {
 			'message': 'Unauthorizd access',
 			'error': e
 		})
-		return next()
+		// return next()
 	}
 }
 
