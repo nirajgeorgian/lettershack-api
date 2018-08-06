@@ -103,30 +103,40 @@ export const updateUser = (req, res) => {
 
 export const setUsername = async (req, res) => {
 	const data = req.body
-	const user = await UserModel.findOne({ username: req.params.username })
-	if(!user) {
+	if(!data.email || !data.password || !data.username) {
+		return error(res, 'Pleae provide email, password and username')
+	}
+	const user = await UserModel.findOne({ email: req.body.email })
+	if(user) {
 		// no user exists set up username create it for first time
-		UserModel.findByIdAndUpdate(res.id)
-			.then(currUser => {
-				if(currUser.id === res.id) {
-					// it's the same user
-					currUser.username = data.username
-					currUser.save()
-					.then(updatedUser => {
-						return res.send({
-							status: true,
-							user: updatedUser
-						})
+		if(user.isValidPassword(data.password)) {
+			// it's the same user
+			const result = await UserModel.findOne({ username: req.body.username })
+			if(result) {
+				if(result.email === req.body.email) {
+					return res.send({
+						status: true,
+						user: result
 					})
 				} else {
-					error(res, `login with account ${req.params.username}`)
+					return error(res, `Someone is using this username ${req.body.username}`)
 				}
-			})
-			.catch(err => {
-				error(res, err)
-			})
+			} else {
+				// no username with this
+				user.username = data.username
+				user.save()
+				.then(updatedUser => {
+					return res.send({
+						status: true,
+						user: updatedUser
+					})
+				})
+			}
+		} else {
+			error(res, `password is wrong for ${req.body.email}`)
+		}
 	} else {
-		error(res, 'User already exists. Try to update')
+		error(res, 'no user exists.')
 	}
 }
 

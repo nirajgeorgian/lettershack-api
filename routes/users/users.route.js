@@ -30,8 +30,10 @@ router.route('/auth/facebook')
 
 router.route('/users/:username')
 	.get(getUser)
-	.post(authMiddleWare, setUsername)
 	.put(authMiddleWare, updateUser)
+
+router.route('/users/username')
+	.post(setUsername)
 
 router.route('/users/:username/follow')
 	.post(authMiddleWare, follow)
