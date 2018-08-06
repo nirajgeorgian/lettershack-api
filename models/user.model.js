@@ -133,26 +133,30 @@ UserSchema.statics.createFbUser = async function(accessToken, refreshToken, prof
 
 UserSchema.statics.loginLocalUser = async function(email, password, cb) {
   let that = this
-  let user = await findEmail.call(this, email)
-  if(user === null) {
-    // No user exist for this user
-    return cb(null, false, { message: 'User not found' })
-  } else  {
-    // User already exists
-    // Checl for google or facebook user existance
-    if(user.password !== undefined) {
-      const validate = await user.isValidPassword(password) // Validate password
+	if(email.split(" ").includes("@")) {
+		let user = await findEmail.call(this, email)
+		if(user === null) {
+			// No user exist for this user
+			return cb(null, false, { message: 'User not found' })
+		} else  {
+			// User already exists
+			// Checl for google or facebook user existance
+			if(user.password !== undefined) {
+				const validate = await user.isValidPassword(password) // Validate password
 
-      if(validate === false) {
-        return cb(null, {}, { message: 'Wrong Password' })
-      } else {
-        return await cb(null, user)
-      }
-    } else {
-      const error = new Error('Try something else')
-      return cb(error, false, { message: 'Wrong Password' })
-    }
-  }
+				if(validate === false) {
+					return cb(null, {}, { message: 'Wrong Password' })
+				} else {
+					return await cb(null, user)
+				}
+			} else {
+				const error = new Error('Try something else')
+				return cb(error, false, { message: 'Wrong Password' })
+			}
+		}
+	} else {
+		return cb(null, {}, { message: 'Please provide email' })
+	}
 }
 
 UserSchema.statics.createGoogleUser = async function(accessToken, refreshToken, profile, cb) {
