@@ -6,7 +6,7 @@ const createToken = auth => {
 		id: auth.id
 	}, constants.SECRET_KEY,
 	{
-		expiresIn: 60 * 120
+		expiresIn: '30d'
 	})
 }
 
