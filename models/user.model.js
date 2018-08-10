@@ -9,6 +9,9 @@ const UserSchema = new Schema({
   password: String,
 	bio: String,
 	image: String,
+	bookLiked: [{
+		bookId: { type: Schema.Types.ObjectId, ref: 'BookModel'}
+	}],
   googleUserId: {
     type: {
       id: String,

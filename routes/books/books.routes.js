@@ -1,6 +1,6 @@
 import express from 'express'
 const router = express.Router()
-import { create, get, getOneBook, checkTitle, updateBook } from '../../controllers/books/books.controller'
+import { create, get, getOneBook, checkTitle, updateBook, likeBook } from '../../controllers/books/books.controller'
 
 router.route('/books')
 	.post(authMiddleWare, create)
@@ -9,6 +9,9 @@ router.route('/books')
 router.route('/book/:id')
 	.get(authMiddleWare, getOneBook)
 	.put(authMiddleWare, updateBook)
+
+router.route('/book/like/:id')
+	.put(authMiddleWare, likeBook)
 
 // helper's routes for ui better development
 router.route('/books/:title')
