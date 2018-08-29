@@ -7,7 +7,17 @@ import { generateToken, sendToken } from '../../config/token.utils'
 import {
 	signup, login, googleLogin, fbLogin, getUser, updateUser, setUsername, follow, unfollow, uploadPhoto
 } from '../../controllers/users/users.controller'
-const upload = multer({ dest: '/lettershack/server/uploads'})
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, '/lettershack/server/uploads')
+	},
+	filename: (req, file, cb) => {
+		const ext = file.mimetype.split('/')[1]
+		const filename = file.fieldname
+		cb(null, `${filename}-${Date.now()}.${ext}`)
+	}
+})
+const upload = multer({ storage: storage })
 
 router.route('/user/signup')
 	.post(signup)
