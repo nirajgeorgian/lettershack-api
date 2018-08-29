@@ -79,21 +79,55 @@ export const getUser = async (req, res) => {
 	}
 }
 
-export const updateUser = (req, res) => {
-	const data = req.body
+export const uploadPhoto = (req, res) => {
+	// req.file
+	/*
+	{
+		fieldname: 'avatar',
+		originalname: 'Editor page.png',
+		encoding: '7bit',
+		mimetype: 'image/png',
+		destination: '/lettershack/server/routes/users/uploads',
+		filename: 'c9b1660658bf3313ad34538553f36bd9',
+		path: '/lettershack/server/routes/users/uploads/c9b1660658bf3313ad34538553f36bd9',
+		size: 62383
+	}
+	*/
+	const file = req.file
+	console.log(file)
 	UserModel.findByIdAndUpdate(res.id)
 		.then(currUser => {
-			currUser.username = data.username ? data.username : null
-			currUser.name = data.name ? data.name : null
-			currUser.bio = data.bio ? data.bio : null
-			currUser.image = data.image ? data.image : null
-			currUser.isAgent = data.isAgent ? data.isAgent : null
+			currUser.image = file.path
 			currUser.save()
 				.then(updatedUser => {
 					return res.send({
 						status: true,
 						user: updatedUser
 					})
+				})
+				.catch(err => {
+					return error(res, err)
+				})
+		})
+		.catch(err => {
+			return error(res, err)
+		})
+}
+
+export const updateUser = (req, res) => {
+	let data = req.body
+	UserModel.findByIdAndUpdate(res.id)
+		.then(currUser => {
+			currUser = Object.assign(currUser, {...data})
+			currUser.save()
+				.then(updatedUser => {
+					return res.send({
+						status: true,
+						user: updatedUser
+					})
+				})
+				.catch(err => {
+					return error(res, err)
 				})
 		})
 		.catch(err => {
@@ -103,7 +137,7 @@ export const updateUser = (req, res) => {
 
 export const setUsername = async (req, res) => {
 	const data = req.body
-	if(!data.email || !data.password || !data.username) {
+	if(!data.email /*|| !data.password*/ || !data.username) {
 		return error(res, 'Pleae provide email, password and username')
 	}
 	const user = await UserModel.findOne({ email: req.body.email })

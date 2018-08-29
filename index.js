@@ -41,8 +41,8 @@ app.use(passport.initialize())
 app.use(ignReq.ignoreFavicon)  // Removing requests to /favicon.ico
 app.use(ignReq.ignoreRobots)  // Fix for /robots.txt for api's
 app.use(cors(corsOption))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json({limit:'50mb'}))
+app.use(bodyParser.urlencoded({ extended: false, limit:'50mb' }))
 appRoutes(app)
 
 /* eslint-disable */

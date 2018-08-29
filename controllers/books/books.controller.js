@@ -10,7 +10,7 @@ export const likeBook = async (req, res) => {
 			const BookModelData = await BookModel.findById(req.body.id)
 			const UserModelData = await UserModel.findById(res.id)
 			let isPresent = false
-			const userIdExist = BookModelData.likes.forEach(like => {
+			BookModelData.likes.forEach(like => {
 				if(String(like.userId) === String(res.id)) {
 					// never liked it so push the id into it and save it
 					isPresent = true
@@ -28,7 +28,7 @@ export const likeBook = async (req, res) => {
 				// BookModelData.likes.userId = res.id
 			}
 			let isPresentUser = false
-			const bookIdExist = UserModelData.bookLiked.forEach(like => {
+			UserModelData.bookLiked.forEach(like => {
 				if(String(like.bookId) === String(res.id)) {
 					// never liked it so push the id into it and save it
 					isPresentUser = true
