@@ -16,6 +16,14 @@ export const signup = (req, res, next) => {
 	})(req, res, next)
 }
 
+export const getUsers = async (req, res, next) => {
+	const data = await UserModel.find({})
+	res.status(200).send({
+		status: true,
+		data
+	})
+}
+
 export const login = (req, res, next) => {
 	passport.authenticate('login', { session: false }, async (err, user) => {
 		if(err) {

@@ -5,7 +5,7 @@ import multer from 'multer'
 const router = express.Router()
 import { generateToken, sendToken } from '../../config/token.utils'
 import {
-	signup, login, googleLogin, fbLogin, getUser, updateUser, setUsername, follow, unfollow, uploadPhoto
+	signup, login, googleLogin, fbLogin, getUser, updateUser, setUsername, follow, unfollow, uploadPhoto, getUsers
 } from '../../controllers/users/users.controller'
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
@@ -21,6 +21,9 @@ const upload = multer({ storage: storage })
 
 router.route('/user/signup')
 	.post(signup)
+
+router.route('/users')
+	.get(getUsers)
 
 router.route('/user/login')
 	.post(login)
