@@ -7,7 +7,7 @@ router.route('/books')
 	.get(get)
 
 router.route('/book/:id')
-	.get(authMiddleWare, getOneBook)
+	.get(getOneBook)
 	.put(authMiddleWare, updateBook)
 
 router.route('/book/like/:id')
