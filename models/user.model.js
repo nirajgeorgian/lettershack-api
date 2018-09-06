@@ -13,18 +13,10 @@ const UserSchema = new Schema({
 		bookId: { type: Schema.Types.ObjectId, ref: 'BookModel'}
 	}],
   googleUserId: {
-    type: {
-      id: String,
-      token: String
-    },
-    select: false
+    type: { id: String, token: String }, select: false
   },
   facebookUserId: {
-    type: {
-      id: String,
-      token: String
-    },
-    select: false
+    type: { id: String, token: String }, select: false
   },
   token: String,
   authType: { type: String, default: 'local'},

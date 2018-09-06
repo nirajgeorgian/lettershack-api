@@ -83,7 +83,7 @@ export const findAll = async (req, res) => {
 
 export const findOne = async (req, res) => {
 	NoteModel.findOne({ _id: req.params.id })
-		.populate('author')
+		.populate('author', 'name', 'email', 'username', 'image', '_id')
 		.populate('comments')
 		.then(note => {
 			if(!note) {

@@ -17,7 +17,7 @@ export const signup = (req, res, next) => {
 }
 
 export const getUsers = async (req, res, next) => {
-	const data = await UserModel.find({})
+	const data = await UserModel.find({}).populate('books')
 	res.status(200).send({
 		status: true,
 		data

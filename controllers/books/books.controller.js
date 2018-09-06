@@ -156,10 +156,13 @@ export const create = async (req, res) => {
 	if(!data.description) {
 		return error(res, 'Please give a description')
 	}
+	if(!data.genre) {
+		return error(res, 'Please give a genre')
+	}
 	// validate the above data with the url
 	const book = new BookModel(data)
 	const profile = await UserModel.findById(res.id)
-	console.log(profile);
+	// console.log(profile.id);
 	book.author = profile._id
 	// book title should be different
 	const isBook = await BookModel.getTitle(data.title)
@@ -177,7 +180,12 @@ export const create = async (req, res) => {
 		book.chapters = data.noteId ? book.addChapter(data.noteId) : book.chapters
 		book.price = data.price ? data.price : book.price
 		book.save()
-		.then(currBook => {
+		.then(async (currBook) => {
+			if(profile.books.indexOf(currBook._id) === -1) {
+				// book is not there so insert into it
+				profile.books.push(currBook._id)
+			}
+			await profile.save()
 			return res.send({
 				status: true,
 				book: currBook
