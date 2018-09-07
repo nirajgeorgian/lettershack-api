@@ -209,18 +209,18 @@ export const get = async (req, res) => {
 export const getOneBook = async (req, res) => {
 	BookModel.findById(req.params.id)
 		.populate('author')
-		.exec(function (err, book) {
+		.then((book) => {
 			if(book) {
-				res.send({
+				return res.send({
 					status: true,
 					book: book
 				})
 			} else {
-				error(res, 'No Book exists')
+				return error(res, 'No Book exists')
 			}
-			if(err) {
-				error(res, err)
-			}
+		})
+		.catch(err => {
+			return error(res, err)
 		})
 }
 
