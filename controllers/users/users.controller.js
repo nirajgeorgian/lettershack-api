@@ -49,7 +49,7 @@ export const login = (req, res, next) => {
 			return await res.json({
 				token,
 				status: true,
-				user: user
+				user
 			})
 			// next()
 		})
