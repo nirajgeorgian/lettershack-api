@@ -48,7 +48,8 @@ export const login = (req, res, next) => {
 			res.setHeader('x-auth-token', token)
 			return await res.json({
 				token,
-				status: true
+				status: true,
+				user: user
 			})
 			// next()
 		})

@@ -227,7 +227,6 @@ export const getOneBook = async (req, res) => {
 
 export const checkTitle = async (req, res) => {
 	const title = req.params.title
-	console.log(title);
 	const confirmTitle = await BookModel.getTitle(title)
 	if(confirmTitle) {
 		// true means he can use given book title or else change the title

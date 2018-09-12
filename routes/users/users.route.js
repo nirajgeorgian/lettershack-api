@@ -44,6 +44,9 @@ router.route('/auth/facebook')
 		sendToken
 	)
 
+// router.route('/user/:id')
+// 	.get(getUser)
+
 router.route('/users/:username')
 	.get(getUser)
 	.put(authMiddleWare, updateUser)
