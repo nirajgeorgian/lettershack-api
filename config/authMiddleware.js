@@ -31,7 +31,7 @@ const authMiddleWare = app => {
 const authMiddleWare = async (req, res, next) => {
 	const token = req.headers['x-auth-token']
 	try {
-		const { user: { id } } = await jwt.verify(token, constants.SECRET_KEY)
+		const  { id }  = await jwt.verify(token, constants.SECRET_KEY)
 		if(id) {
 			res.id = id
 			return next()
@@ -47,6 +47,7 @@ const authMiddleWare = async (req, res, next) => {
 			'message': 'Unauthorizd access',
 			'error': e
 		})
+		console.log(e);
 		// return next()
 	}
 }
