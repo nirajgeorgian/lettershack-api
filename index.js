@@ -30,7 +30,7 @@ const server = http.Server(app)
 // const io = socket(server)
 const port = process.env.PORT || 8000
 const mongoUri = `${process.env.MONGO_HOST}/lettershack`
-
+console.log(process.env.MONGO_HOST);
 // Connect to mongodb
 mongoose.connect(mongoUri, { autoReconnect: true, useNewUrlParser: true })
 const db = mongoose.connection
