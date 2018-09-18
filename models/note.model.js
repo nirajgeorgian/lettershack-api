@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+	import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 import slug from '../config/slugify'
 const Schema = mongoose.Schema
@@ -7,7 +7,7 @@ import UserModel from '../models/user.model'
 const NoteSchema = new Schema({
 	slug: { type: String, unique: true },
 	title: { type: String, required: true, unique: true},
-	description: { type: String, required: true },
+	description: { type: String },
 	content: { type: String },
 	imageUrl: { type: String },
 	tagList: [{ type: String }],
