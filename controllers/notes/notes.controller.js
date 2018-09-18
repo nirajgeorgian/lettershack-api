@@ -10,9 +10,9 @@ export const create = async (req, res) => {
 	if(!data.title) {
 		return error(res, 'Please give a title')
 	}
-	if(!data.description) {
-		return error(res, 'Please give a description')
-	}
+	// if(!data.description) {
+	// 	return error(res, 'Please give a description')
+	// }
 	if(!data.content) {
 		return error(res, 'Please give a content to this note')
 	}
