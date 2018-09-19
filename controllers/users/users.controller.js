@@ -1,6 +1,6 @@
 import passport from 'passport'
 import jwt from 'jsonwebtoken'
-import UserModel from '../../models/user.model'
+import UserModel from '../../models/user.model' 
 import { error } from '../../config/response'
 import constants from '../../config/constants'
 
@@ -87,7 +87,24 @@ export const getUser = async (req, res) => {
 		error(res, 'go ahead with this username')
 	}
 }
+export const getOneUser = async (req, res) => {
+	UserModel.findById(req.params.id)
+	.populate('books')
+	.then((user)=>{
+		if(user) {
+			return res.send({
+				status: true,
+				user: user
+			})
+		} else {
+			error(res, 'user does not exist')
+		}
+	})
+	.catch(err => {
+		return error(res, err)
+	})
 
+}
 export const uploadPhoto = (req, res) => {
 	// req.file
 	/*

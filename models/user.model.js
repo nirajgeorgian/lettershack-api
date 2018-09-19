@@ -54,7 +54,7 @@ UserSchema.methods.removeFollower = async function(id) {
 	}
 	return await this.save()
 }
-
+ 
 UserSchema.methods.addFollowing = async function(id) {
 	if((this.following.indexOf(id) === -1)) {
 		this.following.push(id)
